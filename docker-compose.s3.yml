@@ -1,0 +1,10 @@
+services:
+  localstack:
+    build:
+      context: .
+      dockerfile: Dockerfile.s3
+    ports:
+      - '4566:4566'
+    environment:
+      SERVICES: s3
+      DEBUG: 1

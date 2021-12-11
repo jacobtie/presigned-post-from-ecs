@@ -1,0 +1,3 @@
+FROM localstack/localstack:latest
+
+COPY .aws/init.sh /docker-entrypoint-initaws.d
