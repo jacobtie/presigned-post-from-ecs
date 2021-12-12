@@ -12,12 +12,16 @@ const s3 = new S3Client({
 const password = process.env.PASSWORD || 'test';
 
 app.get('/', async (req, res) => {
-  if (req.headers.authorization !== `Bearer ${password}`) return res.sendStatus(401); 
-  const { url, fields } = await createPresignedPost(s3, {
-    Bucket: 'test-bucket',
-    Key: 'test-file.csv'
-  });
-  return res.json({ url, fields });
+  try {
+    if (req.headers.authorization !== `Bearer ${password}`) return res.sendStatus(401); 
+    const { url, fields } = await createPresignedPost(s3, {
+      Bucket: 'test-bucket',
+      Key: 'test-file.csv'
+    });
+    return res.json({ url, fields });
+  } catch (err) {
+    console.log('Failed to create presigned post', err);
+  }
 });
 
 app.listen(8080, () => {
