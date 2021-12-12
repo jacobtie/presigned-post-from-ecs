@@ -2,11 +2,18 @@
 
 Experiment to sign a form POST to upload a file to S3.
 
+## Dependencies
+
+To run this project locally, you will need:
+
+- [NodeJS](https://nodejs.org/en/)
+- [Docker](https://www.docker.com/)
+
 ## Local Instructions
 
 You can run this locally with a localstack mock S3 bucket.
 
-First, install dependencies with NodeJS v16.13.X
+First, install dependencies with npm
 
 ```bash
 npm install
@@ -42,4 +49,11 @@ or if you don't have `make` installed:
 ```bash
 docker-compose down --remove-orphans
 docker-compose up --build --remove-orphans
+```
+
+To hit the only endpoint running locally, use the following cURL command or equivalent:
+
+```bash
+curl --location --request GET 'http://localhost:8080' \
+--header 'Authorization: Bearer test'
 ```

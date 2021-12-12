@@ -9,7 +9,10 @@ const s3 = new S3Client({
   endpoint: process.env.NODE_ENV === 'local' ? 'http://localhost:4566' : undefined
 });
 
+const password = process.env.PASSWORD || 'test';
+
 app.get('/', async (req, res) => {
+  if (req.headers.authorization !== `Bearer ${password}`) return res.sendStatus(401); 
   const { url, fields } = await createPresignedPost(s3, {
     Bucket: 'test-bucket',
     Key: 'test-file.csv'
