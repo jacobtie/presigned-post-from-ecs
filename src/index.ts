@@ -14,14 +14,21 @@ const password = process.env.PASSWORD || 'test';
 app.get('/', async (req, res) => {
   try {
     if (req.headers.authorization !== `Bearer ${password}`) return res.sendStatus(401); 
+    const { bucket, filename } = req.query;
+    if (!bucket || !filename) return res.status(400).json({ error: 'bucket and filename are required query params' });
     const { url, fields } = await createPresignedPost(s3, {
-      Bucket: 'test-bucket',
-      Key: 'test-file.csv'
+      Bucket: bucket + '',
+      Key: filename + ''
     });
     return res.json({ url, fields });
   } catch (err) {
     console.log('Failed to create presigned post', err);
+    return res.status(500).json({ msg: 'Error occurred', err });
   }
+});
+
+app.get('/health', (req, res) => {
+  return res.sendStatus(200);
 });
 
 app.listen(8080, () => {
